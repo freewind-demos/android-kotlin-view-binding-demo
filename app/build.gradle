@@ -1,9 +1,14 @@
 apply plugin: 'com.android.application'
 
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "demos.hello_world_created_by_ide"
+        applicationId "demos.android_kotlin_hello_world_demo"
         minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
@@ -20,9 +25,27 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:28.0.0-rc01'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+}
+
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin/'
+    test.java.srcDirs += 'src/test/kotlin/'
+    androidTest.java.srcDirs += 'src/androidTest/Kotlin'
+}
+
+project.afterEvaluate {
+    android.applicationVariants.all { variant ->
+        task "installRun${variant.name.capitalize()}"(type: Exec, dependsOn: "install${variant.name.capitalize()}", group: "run") {
+            commandLine = ["adb", "shell", "monkey", "-p", variant.applicationId + " 1"]
+            doLast {
+                println "Launching ${variant.applicationId}"
+            }
+        }
+    }
 }
