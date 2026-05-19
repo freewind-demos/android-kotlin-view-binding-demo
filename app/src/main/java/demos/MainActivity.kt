@@ -1,11 +1,11 @@
-package demos
+package demos.android.kotlin.view.binding.demo
 
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
-import demos.databinding.ActivityMainBinding
+import demos.android.kotlin.view.binding.demo.databinding.ActivityMainBinding
 
 fun updateText(editText: EditText): TextWatcher {
     return object : TextWatcher {
